@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {% if title %}
+  <title>{{ title }}</title>
+  {% else %}
+  <title>Django Blog App</title>
+  {% endif %}
+  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}" />
+
+  <link rel="stylesheet" href="{% static 'css/custom-style.css' %}" />
+</head>
+
+<body>
+
+  <section class="signup-page bg-light">
+    <div class="signup-container d-flex align-items-center justify-content-center">
+
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+      </div>
+      {% endfor %}
+      {% endif %}
+      
+      <div class="card rounded p-5">
+        <form class="signup-form" method="POST">
+          <h3 class="text-center mb-3">Join Today!</h3>
+          {% csrf_token %}
+          <fieldset>
+            <!-- {{ form.as_p }} -->
+            {% for field in form.visible_fields %}
+            <div class="form-group">
+              {{ field.errors }}
+              <div class="row">
+                <div class="col-md-4">
+                  {{ field.label_tag }}
+  
+                </div>
+                <div class="col-md-8">
+                  {{ field }}
+  
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </fieldset>
+          <button type="submit" class="btn btn-primary btn-block">Register</button>
+          <div class="border-top pt-3">
+            <small class="text-muted">
+              Already have an account? <a href="{% url 'login' %}" class="ml-3">Sign In</a>
+            </small>
+          </div>
+        </form>
+      </div>
+  </section>
+
+</body>
+
+</html>

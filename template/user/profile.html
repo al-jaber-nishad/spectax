@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% load static %} {% block content %} {% load crispy_forms_tags %}
+
+<style>
+  .profile-pic {
+    max-width: 200px;
+    max-height: 200px;
+    margin: 0 auto;
+    border-radius: 50%;
+  }
+</style>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card card-body">
+        <a class="btn btn-warning" href="{% url 'lobby' %}">
+          &#8592; Back to Home</a
+        >
+        <hr />
+        <h3 style="text-align: center">Profile Pic</h3>
+        <hr />
+        <img
+          class="img-responsive profile-pic"
+          src="{{ info.profile_pic.url }}"
+        />
+      </div>
+    </div>
+    <div class="col-md-9">
+      <form
+        action=""
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+        <div
+          class="form-group"
+          style="visibility: hidden !important; margin-top: -40px"
+        >
+          <input
+            type="text"
+            class="form-control"
+            value="{{ prev_reg_id }}"
+            name="prev_reg_id"
+          />
+        </div>
+        {{ form.as_p }}
+        <input
+          class="btn btn-primary"
+          type="submit"
+          name="Update Information"
+        />
+      </form>
+    </div>
+  </div>
+</div>
+
+{% comment %}
+<h1>{{ user.username }}'s Profile</h1>
+
+<p>Name: {{ info.firstname }} {{ info.lastname }}</p>
+<p>Email: {{ info.roll }}</p>
+{% endcomment %} {% endblock content %}

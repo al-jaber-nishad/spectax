@@ -1,0 +1,84 @@
+{% load static %}
+<div>
+  <div class="sidebar" id="sidebar">
+    <!-- Navbar Image and text starts -->
+    <div class="logo-content">
+      <div class="logo">
+        <div class="logo-name">
+          <div id="title" class="title">
+            <img src="{% static 'images/logo.png' %}" alt="" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Navbar Image and text ends -->
+    <!-- Navbar starts -->
+    <div class="nav-list">
+      <ul>
+        <!-- First section of nav items -->
+        
+        <li>
+          <a href="{% url 'lobby' %}">
+            <i class="fa-solid fa-rocket"></i>
+            <span class="links-name">Lobby</span>
+          </a>
+        </li>
+
+        <!-- Second section of nav items -->
+      
+
+        <!-- Third section of nav items -->
+        {% comment %} <small>Account</small>
+        <hr>
+        <li>
+          <a href="{% url 'profile' pk=user.pk %}">
+            <i class="fa-solid fa-address-card"></i>
+            <span class="links-name">Profile</span>
+          </a>
+        </li> {% endcomment %}
+        <small>Attendance</small>
+        <hr>
+        <li>
+          {% if user.is_staff %}
+            <a href="{% url 'tch_attendance' %}">
+          {% else %}
+            <a href="{% url 'std_attendance' pk=user.pk %}">
+          {% endif %}
+            <i class="fa-solid fa-address-card"></i>
+            <span class="links-name">Attendance</span>
+          </a>
+        </li>
+        <li>        
+            {% if user.is_staff %}
+              <a href="{% url 'tch-check-attendance' %}">
+            {% else %}
+              <a href="{% url 'std-check-attendance' pk=user.pk %}">
+            {% endif %}
+            
+            <i class="fa-solid fa-address-card"></i>
+            <span class="links-name">Check Attendance</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- Navbar ends -->
+    <!-- Logout div starts -->
+    <div class="profile-content">
+      <div class="profile">
+        <div class="profile-details">
+          <a href="{% url 'logout' %}">
+            <div class="name-job">
+              <div class="name">{{ user.username }}</div>
+              Log Out
+            </div>
+            <div class="log-out-icon">
+              <i class="fa-solid fa-right-from-bracket"></i>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Logout div ends -->
+  </div>
+  <!-- Sidebar Class ends -->
+</div>

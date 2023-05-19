@@ -1,0 +1,69 @@
+{% extends 'base.html' %} {% load static %} {% block content %} 
+{% load crispy_forms_tags %}
+
+<section id="std_attendace">
+  <div class="row d-flex justify-content-center mt-5">
+    <div class="col-md-6">
+      {% for message in messages %}
+        {% if message.tags == 'error' %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% else %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endif %}
+    {% endfor %}
+      <div class="card card-body">
+        <center><h3>Check Attendence</h3></center>
+        <form
+          class="form-horizontal"
+          action="{% url 'takeattendance' %}"
+          method="POST"
+        >
+          {% csrf_token %}
+          
+          <div class="form-group">
+            <label for="sel1">Select Session:</label>
+            <select name="session" class="form-control" id="sel1">
+              <option value="2017-18">2017-18</option>
+              <option value="2018-19">2018-19</option>
+              <option value="2019-20">2019-20</option>
+              <option value="2020-21">2020-21</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="sel1">Select Course:</label>
+            <select name="course" class="form-control" id="sel1">
+              <option value="Data Structure">Data Structure</option>
+              <option value="Algorithm">Algorithm</option>
+              <option value="Operating System">Operating System</option>
+              <option value="Database Management">Database Management</option>
+              <option value="Cyber Security">Cyber Security</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="sel1">Select Period:</label>
+            <select name="period" class="form-control" id="sel1">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-block btn-info">
+            Take Attendence
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

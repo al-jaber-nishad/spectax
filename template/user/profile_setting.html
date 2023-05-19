@@ -1,0 +1,82 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+{% load crispy_forms_tags %}
+
+<div id="profile-setting">
+  <div>
+    <div>
+      <div class="single-row">
+        <div>
+          <div class="panel-heading">
+            <div class="title-text">
+              <strong>
+                <i class="fa-solid fa-unlock-keyhole"></i>
+                Profile Settings
+              </strong>
+            </div>
+          </div>
+          <!-- <div class="top-text">
+            <div class="left">
+              
+            </div>
+            <div class="right">
+              Search bar
+            </div>
+          </div> -->
+          <hr />
+          <div class="panel-body">
+            <div>
+              <div>
+                <div>
+                  <form name="user_information_form" class="user_info" action="">
+                    <fieldset>
+                      <div class="row">
+                        <div class="col-sm-2 control-label">
+                          Profile Picture
+                        </div>
+                        <div class="col-sm-8">
+                          <img class="rounded-circle img-circle" src="{{ user.profile.image.url }}" width="150px" alt="">
+                          {{ form.image|as_crispy_field }}
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-2 control-label">
+                          URL 
+                        </div>
+                        <div class="col-sm-8">
+                          {{ form.url|as_crispy_field }}
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-2 control-label">
+                          Company
+                        </div>
+                        <div class="col-sm-8">
+                          {{ form.company|as_crispy_field }}
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-2 control-label">
+                          Location
+                        </div>
+                        <div class="col-sm-8">
+                          {{ form.location|as_crispy_field }}
+                        </div>
+                      </div>
+                    </fieldset>
+                    <footer class="add-device-footer">
+                      <button>Save</button>
+                    </footer>
+      
+                  </form>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

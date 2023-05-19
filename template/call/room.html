@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+<style>
+  .sidebar {
+    display: none;
+  }
+</style>
+{% load static %} {% block content %}
+
+<main>
+  <section id="room-name-wrapper">
+    <p>Room Name update: <span id="room-name"></span></p>
+  </section>
+
+  <section id="video-streams"></section>
+  {% comment %} <canvas id="canvas" style="display:none;"></canvas> {% endcomment %}
+
+
+  <section id="controls-wrapper">
+    <div class="icon-wrapper btn btn-primary" id="icon-wrapper">
+      <a href="{% url 'tch_attendance' %}" target="_blank">Give Attendance</a>
+    </div>
+
+
+    <div class="icon-wrapper">
+      <img
+        class="control-icon"
+        id="mic-btn"
+        src="{% static 'images/microphone.svg' %}"
+      />
+    </div>
+
+    <div class="icon-wrapper">
+      <img
+        class="control-icon"
+        id="camera-btn"
+        src="{% static 'images/video.svg' %}"
+      />
+    </div>
+
+    <div class="icon-wrapper">
+      <img
+        class="control-icon"
+        id="leave-btn"
+        src="{% static 'images/leave.svg' %}"
+      />
+    </div>
+
+    <!-- <div class="icon-wrapper">
+      <button id="take-attendance-button">Take Attendance</button>
+    </div> -->
+  </section>
+  <video id="video-element"></video>
+</main>
+
+<script
+  type="text/javascript"
+  src="{% static 'assets/AgoraRTC_N-4.8.0.js' %}"
+></script>
+<script type="text/javascript" src="{% static 'js/streams.js' %}"></script>
+{% comment %} <script src="{% static 'js/image-collection.js' %}"></script> {% endcomment %}
+
+{% comment %} <script type="text/javascript" src="{% static 'js/config.js' %}"></script> {% endcomment %}
+{% endblock content %}

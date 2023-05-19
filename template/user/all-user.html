@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div id="item-list">
+  <div>
+    <div>
+      <div class="single-row">
+        <div>
+          <div class="panel-heading">
+            <div class="title-text">
+              Device List
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="top-text">
+              <div class="left">
+                <a href="{% url 'signup' %}">
+                  <button class="add-item">
+                    <i class="fa-solid fa-plus p-2"></i>
+                    Add User
+                  </button>
+                </a>
+              </div>
+              <!-- <div class="right">
+                Search bar
+              </div> -->
+            </div>
+            <hr />
+            <div>
+              <div>
+                <table class="table table-striped b-t b-light">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Role</th>
+                      <th>Staff</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>2</td>
+                      <td>
+                        <a href="">
+                          <strong>Jaber</strong>
+                        </a>
+                      </td>
+                      <td>Domain Admin</td>
+                      <td>Yes</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
