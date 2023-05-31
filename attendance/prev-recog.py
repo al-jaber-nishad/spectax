@@ -1,100 +1,202 @@
+from scipy.spatial import distance
+from imutils import face_utils
+import imutils
+import dlib
 
-# def Recognizer(details):
-
-
-# 	video = cv2.VideoCapture(0)
-
-# 	known_face_encodings = []
-# 	known_face_names = []
-
-# 	# base_dir = os.path.dirname(os.path.abspath(__file__))
-# 	# image_dir = os.path.join(base_dir, "static")
-# 	# image_dir = os.path.join(image_dir, "profile_pics")
-
-# 	# base_dir = os.getcwd()
-# 	base_dir = os.path.dirname(os.path.abspath(__file__))
-# 	# os.chdir("..")
-# 	base_dir = os.getcwd()
-# 	image_dir = os.path.join(base_dir,"{}\{}\{}\{}\{}\{}".format('static','images','Student_Images',details['branch'],details['year'],details['section']))
-# 	# print(image_dir)
-# 	names = []
+import face_recognition
+import numpy as np
+import cv2
+import os
+from datetime import datetime
 
 
-# 	for root,dirs,files in os.walk(image_dir):
-# 		for file in files:
-# 			if file.endswith('jpg') or file.endswith('png'):
-# 				path = os.path.join(root, file)
-# 				img = face_recognition.load_image_file(path)
-# 				label = file[:len(file)-4]
-# 				img_encoding = face_recognition.face_encodings(img)[0]
-# 				known_face_names.append(label)
-# 				known_face_encodings.append(img_encoding)
-
-# 	face_locations = []
-# 	face_encodings = []
+# Attentiveness detection ------------------>
+def eye_aspect_ratio(eye):
+    A = distance.euclidean(eye[1], eye[5])
+    B = distance.euclidean(eye[2], eye[4])
+    C = distance.euclidean(eye[0], eye[3])
+    ear = (A + B) / (2.0 * C)
+    return ear
 
 
-# 	while True:
+# Threshold value which suggests closed eyes
+thresh = 0.27
+# Checking for some n frames
+frame_check = 20
+# Detect face
+detect = dlib.get_frontal_face_detector()
+# Dat file is the crux of the code
+predict = dlib.shape_predictor(
+    "/home/nishad/Mine/Development/SPL-3/FinalProject/SpectaX/attendance/data/shape_predictor_68_face_landmarks.dat")
 
-# 		check, frame = video.read()
-# 		small_frame = cv2.resize(frame, (0,0), fx=0.5, fy= 0.5)
-# 		rgb_small_frame = small_frame[:,:,::-1]
+# Getting the start and end points for both eyes
+(lStart, lEnd) = face_utils.FACIAL_LANDMARKS_68_IDXS["left_eye"]
+(rStart, rEnd) = face_utils.FACIAL_LANDMARKS_68_IDXS["right_eye"]
 
-# 		face_locations = face_recognition.face_locations(rgb_small_frame)
-# 		face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
-# 		face_names = []
+# Ends ------------------------------------>
 
 
-# 		for face_encoding in face_encodings:
+def Recognizer(details):
 
-# 			matches = face_recognition.compare_faces(known_face_encodings, np.array(face_encoding), tolerance = 0.6)
+    # path = ""
 
-# 			face_distances = face_recognition.face_distance(known_face_encodings,face_encoding)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    # os.chdir("..")
+    base_dir = os.getcwd()
+    path = os.path.join(base_dir, "{}/{}/{}/{}".format('static', 'images',
+                        'Student_Images', details['session']))
+    # print(image_dir)
 
-# 			try:
-# 				matches = face_recognition.compare_faces(known_face_encodings, np.array(face_encoding), tolerance = 0.6)
+    images = []
+    classNames = []
+    names = []
+    MyList = os.listdir(path)
+    print(MyList)
+    for cls in MyList:
+        currentimage = cv2.imread(f'{path}/{cls}')
+        images.append(currentimage)
+        classNames.append(os.path.splitext(cls)[0])
 
-# 				face_distances = face_recognition.face_distance(known_face_encodings,face_encoding)
-# 				best_match_index = np.argmin(face_distances)
+    print(classNames)
 
-# 				if matches[best_match_index]:
-# 					name = known_face_names[best_match_index]
-# 					face_names.append(name)
-# 					if name not in names:
-# 						names.append(name)
-# 			except:
-# 				pass
+    def findEncoding(images):
+        encodeList = []
+        for img in images:
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            encode_img = face_recognition.face_encodings(img)[0]
+            encodeList.append(encode_img)
 
-# 		if len(face_names) == 0:
-# 			for (top,right,bottom,left) in face_locations:
-# 				top*=2
-# 				right*=2
-# 				bottom*=2
-# 				left*=2
+        return encodeList
 
-# 				cv2.rectangle(frame, (left,top),(right,bottom), (0,0,255), 2)
+    knownImg_encodeList = findEncoding(images)
 
-# 				# cv2.rectangle(frame, (left, bottom - 30), (right,bottom - 30), (0,255,0), -1)
-# 				font = cv2.FONT_HERSHEY_DUPLEX
-# 				cv2.putText(frame, 'Unknown', (left, top), font, 0.8, (255,255,255),1)
-# 		else:
-# 			for (top,right,bottom,left), name in zip(face_locations, face_names):
-# 				top*=2
-# 				right*=2
-# 				bottom*=2
-# 				left*=2
+    print("Encodding Complete")
 
-# 				cv2.rectangle(frame, (left,top),(right,bottom), (0,255,0), 2)
+    def markAttendance(name):
+        with open('/home/nishad/Desktop/test/Attendance.csv', 'r+') as f:
+            myDataList = f.readlines()
 
-# 				# cv2.rectangle(frame, (left, bottom - 30), (right,bottom - 30), (0,255,0), -1)
-# 				font = cv2.FONT_HERSHEY_DUPLEX
-# 				cv2.putText(frame, name, (left, top), font, 0.8, (255,255,255),1)
+            # print(myDataList)
+            nameList = []
+            for line in myDataList:
+                entry = line.split(',')
+                nameList.append(entry[0])
+            if name not in nameList:
+                now = datetime.now()
+                dtString = now.strftime('%H:%M:%S')
+                f.writelines(f'\n{name},{dtString}')
 
-# 		cv2.imshow("Face Recognition Panel",frame)
+    cap = cv2.VideoCapture(0)
+    flag = 0
+    attn = 1
+    total_frame = 0
+    attentive_frame = 0
+    while True:
 
-# 		if cv2.waitKey(1) == ord('s'):
-# 			break
+        success, img = cap.read()
+        total_frame += 1
 
-# 	video.release()
-# 	cv2.destroyAllWindows()
-# 	return names
+        # Recognize starts ---------------------->
+        if success == True:
+            imgResize = cv2.resize(img, (0, 0), None, 0.25, 0.25)
+            imgResize_RGB = cv2.cvtColor(imgResize, cv2.COLOR_BGR2RGB)
+
+            face_Currentframe = face_recognition.face_locations(imgResize_RGB)
+            encode_Currentframe = face_recognition.face_encodings(
+                imgResize_RGB, face_Currentframe)
+
+            for encodeface, faceLoc in zip(encode_Currentframe, face_Currentframe):
+                matches = face_recognition.compare_faces(
+                    knownImg_encodeList, encodeface)
+                faceDis = face_recognition.face_distance(
+                    knownImg_encodeList, encodeface)
+
+                if min(faceDis) < 0.45:
+                    matchIndex = np.argmin(faceDis)
+                    if matches[matchIndex]:
+                        name = classNames[matchIndex].upper()
+
+                        y1, x2, y2, x1 = faceLoc
+                        y1, x2, y2, x1 = y1*4, x2*4, y2*4, x1*4
+                        cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                        cv2.rectangle(img, (x1, y2-35), (x2, y2),
+                                      (0, 255, 0), cv2.FILLED)
+                        cv2.putText(img, name, (x1 + 6, y2 - 6),
+                                    cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
+                        markAttendance(name)
+
+                        if name not in names:
+                            names.append(name)
+                        # print(names)
+
+                        # cap.release()
+                        # cv2.destroyAllWindows()
+                        # print("Names are:", names)
+                        # return names
+
+            # Recognize ends --------------------->
+            # Attentivenes Starts ------------------>
+            GAZE = 'Face not detected'
+            img = imutils.resize(img, width=450)
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            subjects = detect(gray, 0)
+            txt = 'Not Attentive'
+            for subject in subjects:
+                structure = predict(gray, subject)
+                # converting to NumPy Array
+                structure = face_utils.shape_to_np(structure)
+                # Draw rectangle for face detection
+                if subjects != []:
+                    for subject in subjects:
+                        x = subject.left()
+                        y = subject.top()
+                        w = subject.right() - x
+                        h = subject.bottom() - y
+                        cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+                        txt = 'Attentive'
+                        attentive_frame += 1
+                        GAZE = ''
+
+                leftEye = structure[lStart:lEnd]
+                rightEye = structure[rStart:rEnd]
+                leftEAR = eye_aspect_ratio(leftEye)
+                rightEAR = eye_aspect_ratio(rightEye)
+                ear = (leftEAR + rightEAR) / 2.0
+                # Bordering eyes
+                leftEyeHull = cv2.convexHull(leftEye)
+                rightEyeHull = cv2.convexHull(rightEye)
+                cv2.drawContours(img, [leftEyeHull], -1, (0, 255, 0), 1)
+                cv2.drawContours(img, [rightEyeHull], -1, (0, 255, 0), 1)
+                if ear < thresh:
+                    flag += 1
+                    if flag >= frame_check:
+                        cv2.putText(img, "********DROWSINESS DETECTED!**********", (10, 30),
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+                        # print ("Drowsy")
+                        txt = 'Not Attentive'
+                else:
+                    flag = 0
+            cv2.putText(img, GAZE, (10, 30),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+            cv2.putText(img, txt, (10, 325),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+            # cv2.imshow("Frame", img)
+
+            # Attentiveness ends -------------------->
+
+            cv2.imshow('Webcam', img)
+            key = cv2.waitKey(1)
+            if key == ord("q"):
+                break
+
+        else:
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+    print("Names are:", names)
+
+    print(total_frame)
+    print(attentive_frame)
+    print("Attentiveness in percentage: ",(attentive_frame/total_frame)*100)
+    return names

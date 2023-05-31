@@ -1,0 +1,119 @@
+{% extends 'admin-base.html' %} {% load static %} {% block content %}
+
+<!-- Page Header -->
+<div class="page-header">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="page-sub-header">
+        <h3 class="page-title">
+          Welcome {{ request.user.first_name }} {{request.user.last_name }}!
+        </h3>
+      </div>
+    </div>
+  </div>
+</div>
+{% comment %} Main Content {% endcomment %}
+<div id="main-content">
+  <div class="contents">
+    <main id="create-class">
+      <section id="form-container">
+        <form id="form">
+          <div class="field-wrapper">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-field">
+                  <label>Room Name:</label>
+                  <input
+                    name="room"
+                    placeholder="Enter a room name..."
+                    style="text-transform: uppercase"
+                  />
+                </div>
+
+                <div class="form-field">
+                  <label>Your Name:</label>
+                  <input
+                    name="name"
+                    placeholder="Enter your name..."
+                    style="text-transform: uppercase"
+                  />
+                </div>
+
+                <div class="form-field">
+                  <label>Session:</label>
+                  <input
+                    name="session"
+                    placeholder="Enter session..."
+                    style="text-transform: uppercase"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-field">
+                  <label>Course Name:</label>
+                  <input
+                    name="course"
+                    placeholder="Enter course name..."
+                    style="text-transform: uppercase"
+                  />
+                </div>
+
+                <div class="form-field">
+                  <label>Period No:</label>
+                  <input
+                    name="period"
+                    placeholder="Enter period number..."
+                    style="text-transform: uppercase"
+                  />
+                </div>
+
+                <div class="form-field mt-5">
+                  <input type="submit" value= {% if user.is_staff %} "Create Class" {% else %} "Join Class" {% endif %} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+  let form = document.getElementById("form");
+
+  let handleSubmit = async (e) => {
+    e.preventDefault();
+    let room = e.target.room.value.toUpperCase();
+    let name = e.target.name.value;
+    let session = e.target.session.value;
+    let course = e.target.course.value;
+    let period = e.target.period.value;
+
+    let response = await fetch(`/get_token/?channel=${room}`);
+    let data = await response.json();
+
+    let UID = data.uid;
+    let token = data.token;
+
+    sessionStorage.setItem("UID", UID);
+    sessionStorage.setItem("token", token);
+    sessionStorage.setItem("room", room);
+    sessionStorage.setItem("name", name);
+    sessionStorage.setItem("session", session);
+    sessionStorage.setItem("course", course);
+    sessionStorage.setItem("period", period);
+
+    window.open("/room/", "_self");
+  };
+
+  form.addEventListener("submit", handleSubmit);
+
+  //   const element = document.getElementById("demo");
+  //   element.remove();
+  //   element = element.clone();
+</script>
+<script src="{% static 'js/main.js' %}"></script>
+
+{% endblock content %}

@@ -25,7 +25,10 @@ def loginPage(request):
 
         if user is not None:
             login(request, user)
-            return redirect('lobby')
+            if user.is_staff:
+                return redirect('teacher-dashboard')
+            else:
+                return redirect('lobby')
         else:
             messages.error(request, 'Username or Password is incorrect')
 
@@ -40,14 +43,30 @@ def logoutUser(request):
 
 
 def signup(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+        # Additional fields specific to the Faculty or Student model
+        phone = request.POST['phone']
+        profile_pic = request.FILES.get('profile_pic')
 
-    form = UserRegisterForm()
+        # Create a new Faculty or Student instance based on the provided form data
+        if request.POST.get('is_faculty'):
+            user = Faculty(username=username, phone=phone)
+        else:
+            user = Student(username=username, phone=phone)
 
-    context = {
-        "pageTitle": "SpectaX-Sign Up",
-        "form": form,
-    }
-    return render(request, "user/signup.html", context)
+        if password == confirm_password:
+            user.set_password(password)
+            user.save()
+            # Redirect to the desired page after successful signup
+            return redirect('login')
+        else:
+            # Handle password mismatch
+            return render(request, 'user/signup.html', {'error': 'Passwords do not match'})
+    else:
+        return render(request, 'user/signup.html')
 
 
 def profile_detail(request, pk):
@@ -65,3 +84,5 @@ def profile_detail(request, pk):
         'info': info,
     }
     return render(request, 'user/profile.html', context)
+
+

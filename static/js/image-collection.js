@@ -39,7 +39,19 @@ const captureImage = async () => {
     canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
     const imageBlob = dataURItoBlob(canvas.toDataURL("image/jpeg"));
     const formData = new FormData();
+   
+    
+    // Get session data, course name, and period number from sessionStorage
+    const session = sessionStorage.getItem("session");
+    const course = sessionStorage.getItem("course");
+    const period = sessionStorage.getItem("period");
+
+    // Add session data, course name, and period number to the FormData object
     formData.append("image", imageBlob, "image.jpg");
+    formData.append("session", session);
+    formData.append("course", course);
+    formData.append("period", period);
+
 
     // Send the image to the API using the Fetch API
     const response = await fetch("http://127.0.0.1:8000/api/upload-image/", {

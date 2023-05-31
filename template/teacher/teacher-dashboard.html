@@ -1,0 +1,158 @@
+{% extends 'admin-base.html' %} {% load static %} {% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Page Header -->
+<div class="page-header">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="page-sub-header">
+        <h3 class="page-title">
+          Welcome {{ request.user.first_name }} {{request.user.last_name }}!
+        </h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% comment %} Main Content {% endcomment %}
+<div id="main-content">
+  <div class="contents">
+    <form method="GET" action="{% url 'teacher-dashboard' %}">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="student_id">Student ID:</label>
+            <input
+              type="text"
+              name="student_id"
+              id="student_id"
+              class="form-control"
+              placeholder="Enter Student ID"
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="session">Session:</label>
+            <input
+              type="text"
+              name="session"
+              id="session"
+              class="form-control"
+              placeholder="Enter Session"
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="course">Course:</label>
+            <input
+              type="text"
+              name="course"
+              id="course"
+              class="form-control"
+              placeholder="Enter Course"
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="period">Period:</label>
+            <input
+              type="text"
+              name="period"
+              id="period"
+              class="form-control"
+              placeholder="Enter Period"
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <input
+              type="submit"
+              name="period"
+              id="period"
+              class="btn btn-primary"
+              placeholder="Enter Period"
+            />
+          </div>
+        </div>
+      </div>
+    </form>
+
+    {% comment %} Charts {% endcomment %}
+    <div class="row mt-5">
+      <div class="col-md-6">
+        <canvas id="chartBar1"></canvas>
+      </div>
+      <div class="col-md-6">
+        <canvas id="chartDonut" class="h-300"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    // Get the attendance data from the backend or API
+  // You need to retrieve the count of present and absent students from the database or API
+  // Assuming you have the counts stored in variables presentCount and absentCount
+
+  // Create a bar chart using Chart.js
+  var present = "{{present}}"
+  console.log(present)
+  var ctx = document.getElementById("chartBar1").getContext("2d");
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Present", "Absent"],
+      datasets: [
+        {
+          label: "Attendance",
+          data: [{{present}}, {{absent}}],
+          // data: [25, 10],
+          backgroundColor: "#664dc9",
+        },
+      ],
+    },
+    options: {
+      maintainAspectRatio: false,
+      responsive: true,
+      legend: { display: false, labels: { display: false } },
+      scales: {
+        yAxes: [{ ticks: { beginAtZero: true, fontSize: 10, max: 80 } }],
+        xAxes: [
+          { barPercentage: 0.6, ticks: { beginAtZero: true, fontSize: 11 } },
+        ],
+      },
+    },
+  });
+
+  let not_being = 100 - {{ percentage }}
+  var datapie = {
+    labels: ["Percentage of Attentiveness", "Percentage of not being"],
+    datasets: [
+      {
+        data: [{{ percentage }}, not_being],
+        backgroundColor: [
+          "#664dc9",
+          "#ef4b4b",
+        ],
+      },
+    ],
+  };
+  var optionpie = {
+    maintainAspectRatio: false,
+    responsive: true,
+    legend: { display: false },
+    animation: { animateScale: true, animateRotate: true },
+  };
+
+  var ctx7 = document.getElementById("chartDonut");
+    var myPieChart7 = new Chart(ctx7, {
+      type: "pie",
+      data: datapie,
+      options: optionpie,
+    });
+</script>
+{% endblock content %}

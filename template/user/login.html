@@ -1,95 +1,4 @@
 {% load static %}
-{% comment %} 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SpectaX-Login</title>
-    <link
-      rel="icon"
-      href="{% static 'image/favicon.png' %}"
-      type="image/gif"
-      sizes="16x16"
-    />
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  </head>
-
-  <body>
-    <section class="login-page bg-light">
-      <div
-        class="login-container d-flex align-items-center justify-content-center"
-      >
-        <div class="log-div">
-          <div class="card rounded p-5">
-            {% if messages %} {% for message in messages %}{% if message.tags ==
-            "error" %}
-            <div class="alert alert-danger">{{ message }}</div>
-            {% else %}
-            <div class="alert alert-success">{{ message }}</div>
-            {% endif %} {% endfor %} {% endif %}
-
-            <form class="login-form" method="POST">
-              <h3 class="text-center mb-3">Welcome to SpectaX</h3>
-              {% csrf_token %}
-              <fieldset>
-                <!-- {{ form.as_p }} -->
-                <!-- {% for field in form.visible_fields %}
-                <div class="form-group">
-                  {{ field.errors }} {{ field.label_tag }} {{ field }}
-                </div>
-                {% endfor %} -->
-
-                <!-- Custom Login Form -->
-                <div class="input-group mb-3">
-                  <!-- <div class="input-group-append">
-                    <span class="input-group-text"
-                      ><i class="fas fa-user"></i
-                    ></span>
-                  </div> -->
-
-                  <input
-                    type="text"
-                    name="username"
-                    placeholder="Username..."
-                    class="form-control"
-                  />
-                </div>
-
-                <div class="input-group mb-2">
-                  <!-- <div class="input-group-append">
-                    <span class="input-group-text"
-                      ><i class="fas fa-key"></i
-                    ></span>
-                  </div> -->
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password..."
-                    class="form-control"
-                  />
-                </div>
-              </fieldset>
-              <button type="submit" class="btn btn-primary btn-block">
-                Log In
-              </button>
-              <!-- <div class="border-top pt-3">
-                <small class="text-muted">
-                  Do not have an account?
-                  <a href="{% url 'signup' %}" class="ml-3">Sign Up</a>
-                </small>
-              </div> -->
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-  </body>
-</html> {% endcomment %}
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -101,7 +10,7 @@
     <title>SpectaX - Login</title>
     <link
       rel="icon"
-      href="{% static 'image/favicon.png' %}"
+      href="{% static 'images/favicon.png' %}"
       type="image/gif"
       sizes="16x16"
     />
@@ -115,17 +24,6 @@
       rel="stylesheet"
       href="{% static 'css/bootstrap.min.css' %}"
     />
-
-    <link rel="stylesheet" href="assets/plugins/feather/feather.css" />
-
-    <link rel="stylesheet" href="assets/plugins/icons/flags/flags.css" />
-
-    <link
-      rel="stylesheet"
-      href="assets/plugins/fontawesome/css/fontawesome.min.css"
-    />
-    <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css" />
-
     <link rel="stylesheet" href="{% static '/css/style.css' %}" />
   </head>
   <body>
@@ -138,9 +36,9 @@
             </div>
             <div class="login-right">
               <div class="login-right-wrap">
-                <h1>Welcome to Preskool</h1>
+                <h1>Welcome to SpectaX</h1>
                 <p class="account-subtitle">
-                  Need an account? <a href="register.html">Sign Up</a>
+                  Need an account? <a href="{% url 'signup' %}">Sign Up</a>
                 </p>
                 <h2>Sign in</h2>
                 {% if messages %} {% for message in messages %}{% if message.tags == "error" %}
@@ -185,7 +83,6 @@
                         <span class="checkmark"></span>
                       </label>
                     </div>
-                    <a href="forgot-password.html">Forgot Password?</a>
                   </div>
                   <div class="form-group">
                     <button class="btn btn-primary btn-block" type="submit">
@@ -199,13 +96,5 @@
         </div>
       </div>
     </div>
-
-    <script src="assets/js/jquery-3.6.0.min.js"></script>
-
-    <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <script src="assets/js/feather.min.js"></script>
-
-    <script src="assets/js/script.js"></script>
   </body>
 </html>

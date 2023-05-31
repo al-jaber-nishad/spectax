@@ -38,16 +38,6 @@
         </li> {% endcomment %}
         <small>Attendance</small>
         <hr>
-        <li>
-          {% if user.is_staff %}
-            <a href="{% url 'tch_attendance' %}">
-          {% else %}
-            <a href="{% url 'std_attendance' pk=user.pk %}">
-          {% endif %}
-            <i class="fa-solid fa-address-card"></i>
-            <span class="links-name">Attendance</span>
-          </a>
-        </li>
         <li>        
             {% if user.is_staff %}
               <a href="{% url 'tch-check-attendance' %}">

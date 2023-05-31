@@ -1,0 +1,125 @@
+{% extends 'admin-base.html' %} {% load static %} {% block content %}
+
+<link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css" />
+<div>
+  <div class="page-header">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="page-sub-header">
+          <h3 class="page-title">Students</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="students.html">Student</a>
+            </li>
+            <li class="breadcrumb-item active">Add Student</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card comman-shadow">
+        <div class="card-body">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-12">
+                <h5 class="form-title student-info">
+                  Student Information
+                  <span
+                    ><a href="javascript:;"
+                      ><i class="feather-more-vertical"></i></a
+                  ></span>
+                </h5>
+              </div>
+              <div class="col-12 col-sm-4">
+                <div class="form-group local-forms">
+                  <label>Name <span class="login-danger">*</span></label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="Enter Name" id="name" name="name"
+                  />
+                </div>
+              </div>
+              <div class="col-12 col-sm-4">
+                <div class="form-group local-forms">
+                  <label>Username <span class="login-danger">*</span></label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="Enter Username" id="username" name="username"
+                  />
+                </div>
+              </div>
+              <div class="col-12 col-sm-4">
+                <div class="form-group local-forms">
+                  <label>Password <span class="login-danger">*</span></label>
+                  <input
+                    class="form-control"
+                    type="password" id="password" name="password"
+                    placeholder="Enter Password"
+                  />
+                </div>
+              </div>
+              <div class="col-12 col-sm-4">
+                <div class="form-group local-forms">
+                  <label>Roll </label>
+                  <input
+                    class="form-control"
+                    type="text" id="roll" name="roll"
+                    placeholder="Enter Roll Number"
+                  />
+                </div>
+              </div>
+              <div class="col-12 col-sm-4">
+                <div class="form-group local-forms">
+                  <label>E-Mail <span class="login-danger">*</span></label>
+                  <input
+                    class="form-control"
+                    type="email" id="email" name="email"
+                    placeholder="Enter Email Address"
+                  />
+                </div>
+              </div>
+              <div class="col-12 col-sm-4">
+                <div class="form-group local-forms">
+                  <label>Session <span class="login-danger">*</span></label>
+                  <select class="form-control select"  id="session" name="session" required>
+                    <option value="2017-18">2017-18</option>
+                    <option value="2018-19">2018-19</option>
+                    <option value="2019-20">2019-20</option>
+                    <option value="2020-21">2020-21</option>
+                    <option value="2021-22">2021-22</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group students-up-files">
+                  <label>Upload Student Photo (150px X 150px)</label>
+                  <div class="uplod">
+                    <label class="file-upload image-upbtn mb-0">
+                      Choose File <input type="file" id="profile_pic" name="profile_pic" />
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="student-submit">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/plugins/select2/js/select2.min.js"></script>
+<script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+
+{% endblock content %}

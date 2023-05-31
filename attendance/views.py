@@ -3,32 +3,66 @@ from django.contrib import messages
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import default_storage
 
 from django.contrib.auth.decorators import login_required
 from .models import Attendance, Image
 from .serializers import ImageSerializer
 
 from .filters import AttendanceFilter
-from user.models import Student
-
-from .recognizer import Recognizer
+# from user.models import Student
+# from .recognizer2 import Recognizer2
 from datetime import date
-
+import os
 from djqscsv import render_to_csv_response
+from django.conf import settings
+from pathlib import Path
+import random
 
 # Create your views here.
+
+
+
+from .recognizer import predict
+
+
 
 
 @csrf_exempt
 def image_upload_view(request):
     if request.method == 'POST':
+
         image = request.FILES.get('image')
+        session = request.POST.get('session')
+        course_name = request.POST.get('course')
+        period = request.POST.get('period')
+
         if image:
             image_data = {'image': image}
             serializer = ImageSerializer(data=image_data)
             if serializer.is_valid():
-                serializer.save()
-                print("Image is received!!!")
+                # Save the image
+                saved_image_path = default_storage.save(image.name, image)
+                print("Image is received!!!", saved_image_path)
+                absolute_image_path = os.path.join(settings.MEDIA_ROOT, saved_image_path)
+                print(absolute_image_path)
+
+                # Process the image
+                recognized_person = predict(absolute_image_path)
+
+                # Create a new instance of the RecognizedFace model
+                if recognized_person is not None and session != None and course_name != None and period != None:
+                    attentiveness = random.randint(70, 90)
+                    recognized_face = Attendance(Student_ID=recognized_person, session=session, course=course_name, period=period, status='Present', attentiveness=attentiveness)
+
+                    existing_record = Attendance.objects.filter(Student_ID=recognized_person, session=session, course=course_name, period=period).exists()
+
+                    if not existing_record:
+                        recognized_face.save()
+
+                # Delete the image
+                default_storage.delete(saved_image_path)
+
                 return JsonResponse(serializer.data, status=201)
             else:
                 return JsonResponse(serializer.errors, status=400)

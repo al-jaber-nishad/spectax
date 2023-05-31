@@ -74,22 +74,3 @@ def deleteMember(request):
     print("member name", member)
     member.delete()
     return JsonResponse('Member deleted', safe=False)
-
-def upload_image(request):
-    if request.method == 'POST':
-        image_data = request.POST.get('image')
-        image_data = image_data.replace('data:image/png;base64,', '')  # remove the data URI scheme prefix
-        image_bytes = base64.b64decode(image_data)
-        
-        # save the image to a file
-        # with open('image.png', 'wb') as f:
-        #     f.write(image_bytes)
-
-        print('image recieved')
-        
-        # or save the image to a database using Django's ORM
-        # ...
-
-        return JsonResponse({'message': 'Image uploaded successfully.'})
-    else:
-        return JsonResponse({'message': 'Only POST requests are allowed.'}, status=405)

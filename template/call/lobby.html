@@ -12,27 +12,59 @@
 
     <form id="form">
       <div class="field-wrapper">
-        <div class="form-field">
-          <label>Room Name:</label>
-          <input
-            name="room"
-            placeholder="Enter a room name..."
-            style="text-transform: uppercase"
-          />
-        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-field">
+              <label>Room Name:</label>
+              <input
+                name="room"
+                placeholder="Enter a room name..."
+                style="text-transform: uppercase"
+              />
+            </div>
 
-        <div class="form-field">
-          <label>Your Name:</label>
-          <input
-            name="name"
-            placeholder="Enter your name..."
-            style="text-transform: uppercase"
-          />
-        </div>
+            <div class="form-field">
+              <label>Your Name:</label>
+              <input
+                name="name"
+                placeholder="Enter your name..."
+                style="text-transform: uppercase"
+              />
+            </div>
 
-        <div class="form-field">
-          <input type="submit" value= {% if user.is_staff %} "Create Class" {%
-          else %} "Join Class" {% endif %} />
+            <div class="form-field">
+              <label>Session:</label>
+              <input
+                name="session"
+                placeholder="Enter session..."
+                style="text-transform: uppercase"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-field">
+              <label>Course Name:</label>
+              <input
+                name="course"
+                placeholder="Enter course name..."
+                style="text-transform: uppercase"
+              />
+            </div>
+
+            <div class="form-field">
+              <label>Period No:</label>
+              <input
+                name="period"
+                placeholder="Enter period number..."
+                style="text-transform: uppercase"
+              />
+            </div>
+
+            <div class="form-field mt-5">
+              <input type="submit" value= {% if user.is_staff %} "Create Class" {% else %} "Join Class" {% endif %} />
+            </div>
+          </div>
         </div>
       </div>
     </form>
@@ -63,9 +95,6 @@
 
   form.addEventListener("submit", handleSubmit);
 
-  //   const element = document.getElementById("demo");
-  //   element.remove();
-  //   element = element.clone();
 </script>
 
 

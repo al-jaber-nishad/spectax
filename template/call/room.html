@@ -1,15 +1,20 @@
-{% extends 'base.html' %}
+{% load static %} 
+<title>SpectaX Video Call</title>
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/custom-style.css' %}" />
 <style>
-  .sidebar {
-    display: none;
+  .icon-wrapper span{
+    background-color: #3d5ee1;
+    padding: 15px;
+    color: #fff;
+    border-radius: 5px;
   }
 </style>
-{% load static %} {% block content %}
-
 <main>
   <section id="room-name-wrapper">
-    <p>Room Name update: <span id="room-name"></span></p>
+    <p>Room Name: <span id="room-name"></span></p>
   </section>
 
   <section id="video-streams"></section>
@@ -17,9 +22,10 @@
 
 
   <section id="controls-wrapper">
-    <div class="icon-wrapper btn btn-primary" id="icon-wrapper">
-      <a href="{% url 'tch_attendance' %}" target="_blank">Give Attendance</a>
-    </div>
+    {% comment %} <div class="icon-wrapper">
+      <span>Share Screen</span>
+      <i class="fas fa-share-square"></i>
+    </div> {% endcomment %}
 
 
     <div class="icon-wrapper">
@@ -50,7 +56,7 @@
       <button id="take-attendance-button">Take Attendance</button>
     </div> -->
   </section>
-  <video id="video-element"></video>
+  <video id="video-element" style="display: none;"></video>
 </main>
 
 <script
@@ -58,7 +64,6 @@
   src="{% static 'assets/AgoraRTC_N-4.8.0.js' %}"
 ></script>
 <script type="text/javascript" src="{% static 'js/streams.js' %}"></script>
-{% comment %} <script src="{% static 'js/image-collection.js' %}"></script> {% endcomment %}
+<script src="{% static 'js/image-collection.js' %}"></script>
 
 {% comment %} <script type="text/javascript" src="{% static 'js/config.js' %}"></script> {% endcomment %}
-{% endblock content %}

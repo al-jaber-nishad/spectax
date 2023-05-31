@@ -37,7 +37,6 @@ let joinAndDisplayLocalStream = async () => {
     .insertAdjacentHTML("beforeend", player);
   localTracks[1].play(`user-${UID}`);
   await client.publish([localTracks[0], localTracks[1]]);
-  localTracks[1].setMuted(true);
 };
 
 let handleUserJoined = async (user, mediaType) => {
